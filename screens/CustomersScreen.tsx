@@ -14,14 +14,14 @@ import { useQuery } from "@apollo/client";
 import { GET_CUSTOMERS } from "../graphql/queries";
 import CustomerCard from "../components/CustomerCard";
 
-export type CustomerScreenNavigation = CompositeNavigationProp<
+export type CustomerScreenNavigationProp = CompositeNavigationProp<
   BottomTabNavigationProp<TabStackParamList, "Customers">,
   NativeStackNavigationProp<RootStackParamList>
 >;
 
 const CustomersScreen = () => {
   const tw = useTailwind();
-  const navigation = useNavigation<CustomerScreenNavigation>();
+  const navigation = useNavigation<CustomerScreenNavigationProp>();
   const [input, setInput] = useState<string>("");
   const { loading, error, data } = useQuery(GET_CUSTOMERS);
 
@@ -46,11 +46,13 @@ const CustomersScreen = () => {
         containerStyle={tw("bg-white pt-5 pb-0 px-10")}
       />
 
-      {data?.getCustomers.map(
-        ({ name: ID, value: { email, name } }: CustomerResponse) => (
-          <CustomerCard key={ID} email={email} name={name} userId={ID} />
+      {data?.getCustomers
+        ?.filter((customer: CustomerList) =>
+          customer.value.name.includes(input)
         )
-      )}
+        .map(({ name: ID, value: { email, name } }: CustomerResponse) => (
+          <CustomerCard key={ID} email={email} name={name} userId={ID} />
+        ))}
     </ScrollView>
   );
 };
