@@ -2,8 +2,28 @@
   position: static
 }
 
+.fixed {
+  position: fixed
+}
+
+.absolute {
+  position: absolute
+}
+
+.relative {
+  position: relative
+}
+
+.block {
+  display: block
+}
+
 .inline {
   display: inline
+}
+
+.flex {
+  display: flex
 }
 
 .hidden {
